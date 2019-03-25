@@ -1,10 +1,16 @@
-const express = require('express')
-const users = require('../controllers/users')
+import sequelize from './sequelize'
+import Exercise from './Exercise'
+import User from './User'
+import Workout from './Workout'
 
-const app = express()
-const port = 3000
+// Exercise.belongsTo(User, {
+//   onUpdate: 'cascade',
+//   onDelete: 'cascade',
+// });
 
-app.get('/', (req, res) => res.send('Hello World!'))
-app.use('/users', users)
+function sync(...args) {
+  return sequelize.sync(...args)
+}
 
-app.listen(port, () => console.log(`Example app http://localhost:${port}!`))
+export default { sync }
+export { Exercise, User, Workout}
