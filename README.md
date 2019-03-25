@@ -1,5 +1,5 @@
-# Express + Node.js
-Fitness tracker backend
+# Final Project
+Fitness tracker
 
 ## Install
 
@@ -12,7 +12,3 @@ Install the node packages via:
 To start the dev server run:
 
 `$ npm run dev`
-
-## Location
-
-127.0.0.1:3000/api/v1
