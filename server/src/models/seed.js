@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize'
 
 const config = {
-    name: 'steelon.ru',
+    name: 'fittrack',
     db: {
       url: 'postgres://dev:dev@127.0.0.1/dev',
     },

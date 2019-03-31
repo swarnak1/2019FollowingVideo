@@ -81,6 +81,16 @@ export default (ctx) => {
 		res.status(400).send({ message })
 	}
 	})
+
+	api.delete('/exercises/:id', async (req, res) => {
+		let id = req.params.id
+		Exercise.destroy({
+			where: {
+				id
+			}
+		})
+	})
+
 /* Workouts Routes*/
 
 	api.get('/workouts(/:id)?', async (req, res) => {

@@ -9,7 +9,7 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 var _sequelize = _interopRequireDefault(require("sequelize"));
 
 var config = {
-  name: 'steelon.ru',
+  name: 'fittrack',
   db: {
     url: 'postgres://dev:dev@127.0.0.1/dev'
   }

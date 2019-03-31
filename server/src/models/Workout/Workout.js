@@ -11,7 +11,7 @@ const Workout = sequelize.define('workout', {
       autoIncrement: true,
     },
     // name: {
-    //     type: Sequelize.STRING(255), 
+    //     type: Sequelize.STRING(255),
     //     allowNull: false
     // },
     start_time: {
@@ -34,6 +34,9 @@ const Workout = sequelize.define('workout', {
         type: Sequelize.TEXT(),
         allowNull: true
     },
+    steps_taken: {
+        type: Sequelize.INTEGER()
+    }
 })
 
 Workout.belongsTo(User)
