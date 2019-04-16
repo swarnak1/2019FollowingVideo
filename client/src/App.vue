@@ -8,6 +8,18 @@
   </v-toolbar>
   <v-content>
     <v-container fluid>
+      <v-layout row wrap align-center justify-center>
+      <v-flex xs6 v-if="alerts.length">
+      <v-alert v-for="a in alerts" :key="a.index"
+        :value="true"
+        color="warning"
+        icon="priority_high"
+        outline
+      >
+        {{a}}
+      </v-alert>
+      </v-flex>
+      </v-layout>
       <router-view></router-view>
     </v-container>
   </v-content>
@@ -17,14 +29,15 @@
 
 <script>
 export default {
-  data () {
-    return {
-      items: [
-        { title: 'Login', icon: 'dashboard' },
-        { title: 'Sign Up', icon: 'question_answer' }
-      ]
+  computed: {
+    alerts() {
+      return this.$store.state.alerts
     }
-  }
+  },
+  data () {
+  return {
+   }
+ }
 }
 </script>
 <style lang="scss">
