@@ -157,6 +157,15 @@ export default (ctx) => {
 	}
 	})
 
+	api.delete('/workout/:id', async (req, res) => {
+		let id = req.params.id
+		Workouts.destroy({
+			where: {
+				id
+			}
+		})
+	})
+
 	/* Share */
 
 	api.post('/share', async (req, res) => {

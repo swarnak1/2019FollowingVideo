@@ -36,11 +36,11 @@ const Workout = sequelize.define('workout', {
     },
     steps_taken: {
         type: Sequelize.INTEGER()
+    },
+    photo: {
+        type: Sequelize.BLOB()
     }
 })
-
-Workout.belongsTo(User)
-Workout.belongsTo(Exercise)
 
 
 export default Workout

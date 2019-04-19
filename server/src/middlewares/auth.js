@@ -69,7 +69,6 @@ export default (ctx) => {
     }
 
     return res.json({
-      __pack: 1,
       user,
       token: user.generateAuthToken(),
     })

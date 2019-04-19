@@ -41,6 +41,9 @@ const User = sequelize.define('user', {
         type: Sequelize.FLOAT(),
         allowNull: true
     },
+    photo: {
+      type: Sequelize.BLOB()
+    }
     // isAdmin: {
     //     type: Sequelize.BOOLEAN,
     //     defaultValue: false

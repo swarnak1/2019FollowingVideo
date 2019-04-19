@@ -1,4 +1,5 @@
 import express from 'express'
+import models, { Seed, seedDb } from './models'
 import models from './models'
 import getApi from './api'
 import getMiddlewares from './middlewares'
