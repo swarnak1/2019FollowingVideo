@@ -48,6 +48,7 @@ export default {
       this.$http.post(`/signup`, { username: this.username, email: this.email, password: this.password })
       .then(res => {
         this.$store.commit('setToken', res.data.token)
+        this.$router.push('dashboard')
       })
       .catch(e => {
         console.log(e.response)
@@ -55,12 +56,13 @@ export default {
         setTimeout(() => this.$store.commit('clearAlerts'), 2500)
       })
     }
-   }
+  }
   },
   data: () => ({
     username: '',
     email: '',
     password: '',
+    valid: false,
     nameRules: [
       v => !!v || 'Name is required',
       v => (v && v.length <= 10) || 'Name must be less than 10 characters'

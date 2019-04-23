@@ -3,8 +3,9 @@
   <v-toolbar app>
     <router-link to="/"><v-icon color="blue darken-2">fas fa-home</v-icon></router-link>
     <v-spacer></v-spacer>
-    <router-link to="login"><v-btn outline color="indigo">Login<v-icon class="nav-auth-btn" small>fas fa-key</v-icon></v-btn></router-link>
-    <router-link to="signup"><v-btn outline color="indigo">Signup<v-icon class="nav-auth-btn" small>fas fa-user-plus</v-icon></v-btn></router-link>
+    <router-link v-if="!auth" to="login"><v-btn outline color="indigo">Login<v-icon class="nav-auth-btn" small>fas fa-key</v-icon></v-btn></router-link>
+    <router-link v-if="!auth" to="signup"><v-btn outline color="indigo">Signup<v-icon class="nav-auth-btn" small>fas fa-user-plus</v-icon></v-btn></router-link>
+    <router-link v-if="auth" to="dashboard"><v-btn outline color="indigo">Dashboard</v-btn></router-link>
   </v-toolbar>
   <v-content>
     <v-container fluid>
@@ -20,8 +21,8 @@
       </v-alert>
       </v-flex>
       </v-layout>
-      <router-view></router-view>
     </v-container>
+    <router-view></router-view>
   </v-content>
   <v-footer app></v-footer>
 </v-app>
@@ -32,12 +33,15 @@ export default {
   computed: {
     alerts() {
       return this.$store.state.alerts
+    },
+    auth() {
+      return this.$store.state.auth
     }
   },
   data () {
   return {
-   }
- }
+  }
+}
 }
 </script>
 <style lang="scss">

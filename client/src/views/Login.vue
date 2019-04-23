@@ -8,8 +8,8 @@
       v-model="valid"
       lazy-validation
     >
-      <v-text-field
-        v-model="name"
+    <v-text-field
+        v-model="username"
         :counter="10"
         :rules="nameRules"
         label="Name"
@@ -36,19 +36,23 @@ export default {
   },
   methods: {
     handleFormSubmit: function () {
-      this.$http.post(`/login`, { username: this.name, password: this.password })
-      .then(res => {
-        this.$store.commit('setToken', res.data.token)
-      })
-      .catch(e => {
-        console.log(e)
-        this.$store.commit('addAlert', e.response.data)
-        setTimeout(() => this.$store.commit('clearAlerts'), 2500)
-      })
+      if (this.$refs.form.validate()) { 
+      this.$http.post(`/login`, { username: this.username, password: this.password })
+        .then(res => {
+          this.$store.commit('setToken', res.data.token)
+          this.$store.commit('setAuth', true)
+          this.$router.push('dashboard')
+        })
+        .catch(e => {
+          console.log(e)
+          this.$store.commit('addAlert', e)
+          setTimeout(() => this.$store.commit('clearAlerts'), 2500)
+        })
     }
+  }
   },
   data: () => ({
-    name: '',
+    username: '',
     password: '',
     nameRules: [
       v => !!v || 'Name is required',
