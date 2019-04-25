@@ -60,7 +60,7 @@ export default (ctx) => {
     const params = authMiddleware.getUserFields(req, res)
     if (!params.password) return res.status(400).send('No password sent')
 
-    const user = await User.findOne({ where: { username : params.username } })
+    const user = await User.findOne({ where: { username : params.username }, attributes: { exclude: ['createdAt', 'updatedAt'] } })
 
     if (!user) return res.status(404).send('No such user')
 

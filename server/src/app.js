@@ -1,6 +1,5 @@
 import express from 'express'
 import models, { Seed, seedDb } from './models'
-import models from './models'
 import getApi from './api'
 import getMiddlewares from './middlewares'
 
@@ -44,9 +43,10 @@ export default class App {
 
   run(){
     models.sync().catch(err => console.error(err.stack)).then(() => {
+      seedDb()
       this.app.listen(this.config.port, () => {
       console.log(`${this.config.name} application listening on port ${this.config.port}`)
     })
-   })
+  })
   }
 }

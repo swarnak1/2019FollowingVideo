@@ -5,19 +5,20 @@ import { Exercise, Workout } from '../models'
 
 export default (ctx) => {
 	
-  let cache = apicache.middleware
-  const api = AsyncRouter()
+let cache = apicache.middleware
+const api = AsyncRouter()
 
-  api.use(function(req, res, next) {
+api.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*")
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+	res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
 	next()
-  })
+})
 
-    api.all('/', () => ({ version: '0.3' }))
+	api.all('/', () => ({ version: '0.3' }))
 
 
-  /* Authentication Routes */
+/* Authentication Routes */
 
 	api.all('/validate', ctx.middlewares.Auth.validate)
 	api.post('/signup', ctx.middlewares.Auth.signup)
@@ -72,7 +73,7 @@ export default (ctx) => {
 		)
 		.then(([ rowsUpdate, [updated] ]) => {
 		})
-	  .catch((err) => {
+	.catch((err) => {
 			console.log(err)
 		})
 		res.status(200).send({ message })
@@ -93,18 +94,21 @@ export default (ctx) => {
 
 /* Workouts Routes*/
 
-	api.get('/workouts(/:id)?', async (req, res) => {
+	api.get('/workouts(/:uuid)?', async (req, res) => {
 			let id = req.params.id
+			let uuid = req.params.uuid
 			if (id) {
-		  const workouts = await Workouts.findAll({
-				where: { id },
-		  	attributes: { exclude: ['createdAt', 'updatedAt'] },
-		  })
+		const workouts = await Workout.findAll({
+			where: { id },
+			attributes: { exclude: ['updatedAt'] },
+		})
 			res.status(200).send(workouts)
 		} else {
-		  const workouts = await Workouts.findAll({
-		  	attributes: { exclude: ['createdAt', 'updatedAt'] },
-		  })
+		const workouts = await Workout.findAll({
+			where: { userId: uuid },
+			attributes: { exclude: ['updatedAt'] },
+			include: {model: Exercise}
+		})
 			res.status(200).send(workouts)			
 		}
 
@@ -136,18 +140,18 @@ export default (ctx) => {
 
 	})
 
-	api.put('/workout/:id', async (req, res) => {
+	api.put('/workouts/:id', async (req, res) => {
 		let id = req.params.id
 		let { eid, uid, description, name } = req.body
 		let message = `workout successfully updated at ${new Date()}`
 
-		if (name  && eid && uid) { Workouts.update(
+		if (name  && eid && uid) { Workout.update(
 			{ name, goal, description },
 			{ returning: true, where: { id } }
 		)
 		.then(([ rowsUpdate, [updated] ]) => {
 		})
-	  .catch((err) => {
+	.catch((err) => {
 			console.log(err)
 		})
 		res.status(200).send({ message })
@@ -157,9 +161,9 @@ export default (ctx) => {
 	}
 	})
 
-	api.delete('/workout/:id', async (req, res) => {
+	api.delete('/workouts/:id', async (req, res) => {
 		let id = req.params.id
-		Workouts.destroy({
+		Workout.destroy({
 			where: {
 				id
 			}
