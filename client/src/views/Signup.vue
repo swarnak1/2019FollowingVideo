@@ -48,6 +48,8 @@ export default {
       this.$http.post(`/signup`, { username: this.username, email: this.email, password: this.password })
       .then(res => {
         this.$store.commit('setToken', res.data.token)
+        this.$store.commit('setAuth', true)
+        this.$store.commit('SET_USER_UUID', res.data.user.id)
         this.$router.push('dashboard')
       })
       .catch(e => {
