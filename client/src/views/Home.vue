@@ -11,8 +11,8 @@
 </template>
 
 <style scoped lang="scss">
-.main-image {
-  margin-top: -4em !important;
-  padding-top: 0em !important;
-}
+// .main-image {
+//   margin-top: 0em !important;
+//   padding-top: 0em !important;
+// }
 </style>
