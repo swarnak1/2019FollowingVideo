@@ -47,6 +47,16 @@
             <div class="headline">{{'goal: ' + w.exercise.goal}}</div>
             <div class="headline">{{'calories burnt: ' + w.calories_burnt}}</div>
         </div>
+
+        <v-dialog v-model="dialog" max-width="500px">
+            <WorkoutForm :workout="w"></WorkoutForm>
+        </v-dialog>
+
+        <v-card-actions>
+        <v-btn flat>Share</v-btn>
+        <v-spacer></v-spacer>
+        <Button :id="w.id" :dialog="dialog" @switchDialog="handleDialog"></Button>
+        </v-card-actions>
     </v-card>
     </v-flex>
 </v-layout>
@@ -60,12 +70,36 @@ export default {
     Button,
     WorkoutForm
     },
+    created() {
+        this.$store.dispatch('loadWorkouts', { vm: this })
+    },
+    computed: {
+        workouts() { return this.$store.getters.workouts }
+    },
     methods: {
+        normalizeDate: (d) => {
+            d = new Date(d).toLocaleString('en-GB', { timeZone: 'UTC' })
+            return d
+        },
+        duration: function (ds, de) {
+            ds = new Date(`Sep 1, 2018 ${ds} GMT+00:00`)
+            de = new Date(`Sep 1, 2018 ${de} GMT+00:00`)
+            let res = Math.floor((de-ds) / (1000*60))
+            return `${res} min.`
+        },
         logout: function () {
             this.$store.commit('setAuth', false)
             this.$store.commit('clearToken')
             this.$router.push('/')
         },
+        handleDialog(v) {
+        this.dialog = v
+        }
+    },
+    data() {
+        return {
+            dialog: false
+        }
     }
 }
 </script>
