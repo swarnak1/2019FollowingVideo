@@ -1,14 +1,5 @@
 <template>
-<v-speed-dial
-      v-model="fab"
-      :top="top"
-      :bottom="bottom"
-      :right="right"
-      :left="left"
-      :direction="direction"
-      :open-on-hover="hover"
-      :transition="transition"
-    >
+<v-speed-dial>
       <template v-slot:activator>
         <v-btn
           v-model="fab"
@@ -29,6 +20,9 @@
         @click="change"
       >
         <v-icon>edit</v-icon>
+        <v-dialog v-model="dialog" max-width="500px">
+            <WorkoutForm :workout="w"></WorkoutForm>
+        </v-dialog>
       </v-btn>
       <v-btn @click="handleDelete(id)"
         fab
@@ -51,6 +45,7 @@ export default {
     handleDelete: function (id) {
       this.$store.dispatch('removeWorkout', id)
     },
+
   }
 }
 </script>

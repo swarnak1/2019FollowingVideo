@@ -10,11 +10,11 @@
         <v-list class="pa-0">
         <v-list-tile avatar>
             <v-list-tile-avatar>
-            <img src="https://randomuser.me/api/portraits/women/10.jpg">
+            <v-icon>account_circle</v-icon>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-            <v-list-tile-title>Eva</v-list-tile-title>
+            <v-list-tile-title>{{user.username}}</v-list-tile-title>
             </v-list-tile-content>
         </v-list-tile>
         </v-list>
@@ -49,7 +49,7 @@
         </div>
 
         <v-dialog v-model="dialog" max-width="500px">
-            <WorkoutForm :workout="w"></WorkoutForm>
+            <WorkoutForm :workout="w" :newItem="false"></WorkoutForm>
         </v-dialog>
 
         <v-card-actions>
@@ -59,6 +59,21 @@
         </v-card-actions>
     </v-card>
     </v-flex>
+    <v-fab-transition>
+    <v-btn @click="handleDialogCreate"
+        color="indigo"
+        dark
+        absolute
+        bottom
+        right
+        fab
+    >
+        <v-icon>add</v-icon>
+    </v-btn>
+    </v-fab-transition>
+    <v-dialog v-model="dialogCreate" max-width="500px">
+    <WorkoutForm :workout="[]" :newItem="true"></WorkoutForm>
+    </v-dialog>
 </v-layout>
 </template>
 
@@ -74,7 +89,8 @@ export default {
         this.$store.dispatch('loadWorkouts', { vm: this })
     },
     computed: {
-        workouts() { return this.$store.getters.workouts }
+        workouts() { return this.$store.getters.workouts },
+        user() {return this.$store.getters.user}
     },
     methods: {
         normalizeDate: (d) => {
@@ -94,11 +110,15 @@ export default {
         },
         handleDialog(v) {
         this.dialog = v
+        },
+        handleDialogCreate(v) {
+        this.dialogCreate = v
         }
     },
     data() {
         return {
-            dialog: false
+            dialog: false,
+            dialogCreate: false
         }
     }
 }
