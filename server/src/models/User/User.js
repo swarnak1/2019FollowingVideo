@@ -48,11 +48,11 @@ const User = sequelize.define('user', {
     //     type: Sequelize.BOOLEAN,
     //     defaultValue: false
     // },
- })
+})
 
- // Sequelize instance level methods
+// Sequelize instance level methods
 
- User.isValidEmail = function (email) {
+User.isValidEmail = function (email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email)
   }
@@ -61,15 +61,15 @@ const User = sequelize.define('user', {
   }
   User.prototype.toJSON = function () {
       /**
-       * Returns User data without password 
-       * this.get({plain:true} In order to hide additional User instance stuff, result JSON
-       * http://docs.sequelizejs.com/manual/instances.html#values-of-an-instance
-       * @returns { object }
-       **/
-    return _.omit(this.get({plain:true}), ['password'])
+      * Returns User data without password 
+      * this.get({plain:true} In order to hide additional User instance stuff, result JSON
+      * http://docs.sequelizejs.com/manual/instances.html#values-of-an-instance
+      * @returns { JSON }
+      **/
+    return _.omit(this.get({plain:true}), ['password', 'photo'])
   }
   User.prototype.getIdentity = function (params) {
-    const object = _.pick(this.get({plain:true}), ['_id', 'username', 'name', 'avatar', 'role'])
+    const object = _.pick(this.get({plain:true}), ['id', 'username', 'email'])
     if (!params) return object
     return Object.assign(object, params)
   }
@@ -78,16 +78,17 @@ const User = sequelize.define('user', {
   }
   User.prototype.verifyPassword = async function (password) {
       /**
-       * Compares request password with db data
-       * @returns { boolean }
-       */
+      * Compares request password with db data
+      * @returns { boolean }
+      */
+      console.log(await bcryptCompare(password, this.password))
     return await bcryptCompare(password, this.password)
   }
   const SALT_WORK_FACTOR = 10
   User.beforeCreate(async (user) => {
       /**
-       * Sets hook to hash password before saving in db
-       */
+      * Sets hook to hash password before saving in db
+      */
       let salt = await bcryptGenSalt(SALT_WORK_FACTOR)
       let hash = await bcryptHash(user.password, salt)
       user.password = hash

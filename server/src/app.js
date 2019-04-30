@@ -42,7 +42,7 @@ export default class App {
   }
 
   run(){
-    models.sync().catch(err => console.error(err.stack)).then(() => {
+    models.sync({force: true}).catch(err => console.error(err.stack)).then(() => {
       seedDb()
       this.app.listen(this.config.port, () => {
       console.log(`${this.config.name} application listening on port ${this.config.port}`)
@@ -50,3 +50,4 @@ export default class App {
   })
   }
 }
+

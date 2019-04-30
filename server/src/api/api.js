@@ -115,11 +115,12 @@ api.use(function(req, res, next) {
 	})
 	
 	api.post('/workouts', async (req, res) => {
-		let { eid, uid, description, trainer } = req.body
-		if (req.body.started && req.body.ended) {
+		let { eid, uid, description, trainer, start_time, end_time } = req.body
+		console.log(start_time)
+		if (description && eid && uid) {
 			const workout = await Workout.build({
-				start_time: req.body.started,
-				end_time: req.body.ended,
+				start_time,
+				end_time,
 				calories_burnt: req.body.calories_burnt,
 				trainer,
 				description,
@@ -142,11 +143,11 @@ api.use(function(req, res, next) {
 
 	api.put('/workouts/:id', async (req, res) => {
 		let id = req.params.id
-		let { eid, uid, description, name } = req.body
+		let { eid, uid, description, steps_taken, calories_burnt, start_time } = req.body
 		let message = `workout successfully updated at ${new Date()}`
 
-		if (name  && eid && uid) { Workout.update(
-			{ name, goal, description },
+		if (description) { Workout.update(
+			{ description, calories_burnt, steps_taken },
 			{ returning: true, where: { id } }
 		)
 		.then(([ rowsUpdate, [updated] ]) => {

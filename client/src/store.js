@@ -19,13 +19,16 @@ export default new Vuex.Store({
   state: {
     auth: false,
     alerts : [],
-    uuid: '',
+    user: {},
     token : '',
-    workouts: []
+    workouts: [],
+    exercises: []
   },
   getters: {
     newWorkout: state => state.workouts,
-    workouts: state => state.workouts
+    workouts: state => state.workouts,
+    exercises: state => state.exercises,
+    user: state => state.user
   },
   mutations: {
     setAuth (state, payload) {
@@ -43,21 +46,30 @@ export default new Vuex.Store({
     clearToken (state) {
       state.token = ''
     },
-    SET_USER_UUID (state, id) {
-      state.uuid = id
+    SET_USER (state, payload) {
+      state.user = payload
     },
     SET_WORKOUTS (state, workouts) {
       state.workouts = workouts
     },
+    SET_EXERCISES (state, exercises) {
+      state.exercises = exercises
+    }
   },
   actions: {
     loadWorkouts ({ state, commit }) {
-      Axios.get(`/workouts/${state.uuid}`)
+      Axios.get(`/workouts/${state.user.id}`)
       .then(response => {
         commit('SET_WORKOUTS', response.data)
       })
       .catch(error => {
         console.log(error)
+      })
+    },
+    loadExercises ({ commit }) {
+      Axios.get(`/exercises`)
+      .then(res => {
+        commit('SET_EXERCISES', res.data)
       })
     },
     removeWorkout ({ dispatch }, id) {

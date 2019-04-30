@@ -41,12 +41,16 @@ export default {
         .then(res => {
           this.$store.commit('setToken', res.data.token)
           this.$store.commit('setAuth', true)
-          this.$store.commit('SET_USER_UUID', res.data.user.id)
+          this.$store.commit('SET_USER', res.data.user)
           this.$router.push('dashboard')
         })
         .catch(e => {
           console.log(e)
-          this.$store.commit('addAlert', e)
+          if (e.response.data) {
+            this.$store.commit('addAlert', e.response.data) 
+            } else {
+              this.$store.commit('addAlert', e)
+          }
           setTimeout(() => this.$store.commit('clearAlerts'), 2500)
         })
     }

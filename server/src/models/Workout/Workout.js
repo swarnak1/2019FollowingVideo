@@ -6,23 +6,21 @@ import Exercise from '../Exercise'
 
 const Workout = sequelize.define('workout', {
     id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
     },
     // name: {
-    //     type: Sequelize.STRING(255),
+    //     type: Sequelize.STRING(255), 
     //     allowNull: false
     // },
     start_time: {
         type: Sequelize.TIME(),
         allowNull: true,
-        validate: { isDate: true }
     },
     end_time: {
         type: Sequelize.TIME(),
         allowNull: true,
-        validate: { isDate: true }
     },
     calories_burnt: {
         type: Sequelize.STRING()
