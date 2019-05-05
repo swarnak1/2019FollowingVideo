@@ -45,7 +45,12 @@ export default {
     handleDelete: function (id) {
       this.$store.dispatch('removeWorkout', id)
     },
-
+  },
+  data() {
+    return {
+      dialog: false,
+      transition: 'slide-y-reverse-transition'
+    }
   }
 }
 </script>
