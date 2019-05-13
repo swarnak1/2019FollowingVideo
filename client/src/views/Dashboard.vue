@@ -34,6 +34,25 @@
     </v-list>
 </v-navigation-drawer>
 </v-flex>
+<!-- search -->
+<v-card>
+    <v-autocomplete
+    v-model="select"
+    :loading="loading"
+    :items="items"
+    :search-input.sync="search"
+    cache-items
+    class="mx-3"
+    flat
+    hide-no-data
+    hide-details
+    label="exercises you are looking for?"
+    solo-inverted
+    ></v-autocomplete>
+</v-card>
+
+<!-- workouts -->
+  
     <v-flex xs2 sm2 v-for="w in workouts" :key="w.id">
     <v-card>
     <v-card-title primary-title>
@@ -113,12 +132,36 @@ export default {
         },
         handleDialogCreate(v) {
         this.dialogCreate = v
-        }
+        },
+        querySelections (v) {
+            this.loading = true
+            // Simulated ajax query
+            this.$http.get(`/exercises/`)
+                    .then( response => {
+                    let wrks = response.data
+                    for ( let i of wrks) {
+                        this.items.push(i.name)
+                    }
+                    this.items = wrks.filter(e => {
+                        return (e || '').toLowerCase().indexOf((v || '').toLowerCase()) > -1
+                })
+                    })
+    }
+    },
+    watch: {
+    search (val) {
+        val && val !== this.select && this.querySelections(val)
+    }
     },
     data() {
-        return {
+        return {           
+            model: null,
             dialog: false,
-            dialogCreate: false
+            dialogCreate: false,
+            items: [],
+            search: null,
+            select: null,
+            states: []
         }
     }
 }
